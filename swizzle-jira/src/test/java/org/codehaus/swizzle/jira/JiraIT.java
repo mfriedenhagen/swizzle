@@ -30,7 +30,7 @@ public class JiraIT extends SwizzleJiraTestCase {
     public void testJira() throws Exception {
         JiraReadOnly jira = getJira();
 
-        Issue issue = jira.getIssue("SWIZZLE-1");
+        Issue issue = jira.getIssue("MSHARED-490");
         assertEquals("Issue.getCreated()", "Fri Aug 04 20:05:13 2006", formatter.format(issue.getCreated()));
         assertEquals("Issue.getSummary()", "Unit Test Summary", issue.getSummary());
         assertEquals("Issue.getType()", 2, issue.getType().getId());
