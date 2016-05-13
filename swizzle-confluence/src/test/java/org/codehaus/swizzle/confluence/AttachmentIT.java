@@ -21,7 +21,7 @@ import java.util.HashMap;
 /**
  * @version $Revision$ $Date$
  */
-public class AttachmentTest extends SwizzleConfluenceTestCase {
+public class AttachmentIT extends SwizzleConfluenceTestCase {
 
   public void testNothing(){
   }

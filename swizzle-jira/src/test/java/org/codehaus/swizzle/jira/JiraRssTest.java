@@ -8,13 +8,14 @@ import junit.framework.TestCase;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 public class JiraRssTest extends TestCase {
 
     // Date is retrieved with a timezone from rss
-    SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+    SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 
     /*
      * SET TZ to PDT for these tests

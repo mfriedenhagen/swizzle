@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @version $Revision$ $Date$
  */
-public class SubTasksTest extends SwizzleJiraTestCase {
+public class SubTasksIT extends SwizzleJiraTestCase {
 
     // Date is retrieved without timezone from xmlrpc (@codehaus?)
     SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");

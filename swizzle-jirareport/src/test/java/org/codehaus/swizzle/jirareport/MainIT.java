@@ -27,7 +27,7 @@ import java.net.URL;
 /**
  * @version $Revision$ $Date$
  */
-public class MainTest extends TestCase {
+public class MainIT extends TestCase {
 
     public void testRssTemplate() throws Exception {
         assertTemplate("jirarss.vm", "jirarss-report.txt");

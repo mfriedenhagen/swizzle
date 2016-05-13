@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * @version $Revision$ $Date$
  */
-public class PageTest extends SwizzleConfluenceTestCase {
+public class PageIT extends SwizzleConfluenceTestCase {
 
     public void test() throws Exception {
         Confluence confluence = getConfluence();

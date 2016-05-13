@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @version $Revision$ $Date$
  */
-public class FilterTest extends SwizzleJiraTestCase {
+public class FilterIT extends SwizzleJiraTestCase {
 
     public void testGetSavedFilter() throws Exception {
         Jira jira = getJira();

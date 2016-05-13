@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * @version $Revision$ $Date$
  */
-public class JiraTest extends SwizzleJiraTestCase {
+public class JiraIT extends SwizzleJiraTestCase {
 
     // Date is retrieved without timezone from xmlrpc (@codehaus?)
     SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");

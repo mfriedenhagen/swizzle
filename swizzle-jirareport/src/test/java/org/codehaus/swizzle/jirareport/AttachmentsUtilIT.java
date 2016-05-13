@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @version $Revision$ $Date$
  */
-public class AttachmentsUtilTest extends SwizzleJiraTestCase {
+public class AttachmentsUtilIT extends SwizzleJiraTestCase {
     public void testSaveAttachment() throws Exception {
         AttachmentsUtil attachmentsUtil = new AttachmentsUtil();
 
