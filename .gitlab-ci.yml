@@ -1,0 +1,17 @@
+variables:
+  MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+
+before_script:
+  - 'mvn --batch-mode --non-recursive -q io.takari:maven:wrapper -Dmaven=3.3.9'
+
+jdk7:
+  image: maven:3-jdk-7
+  stage: test
+  script:
+    - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
+
+jdk8:
+  image: maven:3-jdk-8
+  stage: test
+  script:
+    - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
