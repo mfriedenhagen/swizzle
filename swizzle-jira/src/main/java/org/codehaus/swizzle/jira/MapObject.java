@@ -22,15 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @version $Revision$ $Date$
@@ -58,7 +50,10 @@ public class MapObject {
 
     protected MapObject(Map data) {
         fields = new HashMap(data);
-        formats = new SimpleDateFormat[] { new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy"), new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z"), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S"), };
+        formats = new SimpleDateFormat[] {
+                new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH),
+                new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH), };
         attributes = new Attributes();
     }
 
