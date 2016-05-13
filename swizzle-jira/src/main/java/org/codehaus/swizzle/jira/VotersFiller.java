@@ -31,10 +31,10 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class VotersFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
-    public VotersFiller(Jira jira) {
+    public VotersFiller(JiraReadOnly jira) {
         this.jira = jira;
     }
 

@@ -24,7 +24,7 @@ import java.util.List;
 public class FilterIT extends SwizzleJiraTestCase {
 
     public void testGetSavedFilter() throws Exception {
-        Jira jira = getJira();
+        JiraReadOnly jira = getJira();
 
         Filter filter = jira.getSavedFilter("swizzle test issues");
         assertNotNull("filter", filter);
@@ -36,7 +36,7 @@ public class FilterIT extends SwizzleJiraTestCase {
     }
 
     public void _testGetIssuesFromFilter() throws Exception {
-        Jira jira = getJira();
+        JiraReadOnly jira = getJira();
 
         List issues = jira.getIssuesFromFilter("swizzle test issues");
         for (int i = 0; i < issues.size(); i++) {

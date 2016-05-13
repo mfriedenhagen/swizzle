@@ -20,10 +20,10 @@ package org.codehaus.swizzle.jira;
  * @version $Revision$ $Date$
  */
 public class ProjectFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
-    public ProjectFiller(Jira jira) {
+    public ProjectFiller(JiraReadOnly jira) {
         this.jira = jira;
     }
 

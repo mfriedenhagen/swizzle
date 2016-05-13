@@ -24,10 +24,10 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class BasicIssueFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
-    public BasicIssueFiller(Jira jira) {
+    public BasicIssueFiller(JiraReadOnly jira) {
         this.jira = jira;
     }
 

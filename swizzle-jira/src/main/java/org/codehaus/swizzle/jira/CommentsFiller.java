@@ -22,10 +22,10 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class CommentsFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
-    public CommentsFiller(Jira jira) {
+    public CommentsFiller(JiraReadOnly jira) {
         this.jira = jira;
     }
 

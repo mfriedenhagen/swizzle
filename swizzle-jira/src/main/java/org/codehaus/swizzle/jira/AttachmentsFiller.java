@@ -33,12 +33,12 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class AttachmentsFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
     private final List<DateFormat> formats = new ArrayList<DateFormat>();
 
-    public AttachmentsFiller(Jira jira) {
+    public AttachmentsFiller(JiraReadOnly jira) {
         this.jira = jira;
         formats.add(new SimpleDateFormat("dd/MMM/yy hh:mm a"));
         formats.add(new SimpleDateFormat("dd/MMM/yy hh:mm"));

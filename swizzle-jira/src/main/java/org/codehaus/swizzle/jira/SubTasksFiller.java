@@ -25,10 +25,10 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class SubTasksFiller implements IssueFiller {
-    private final Jira jira;
+    private final JiraReadOnly jira;
     private boolean enabled;
 
-    public SubTasksFiller(Jira jira) {
+    public SubTasksFiller(JiraReadOnly jira) {
         this.jira = jira;
     }
 
@@ -108,9 +108,9 @@ public class SubTasksFiller implements IssueFiller {
     }
 
     public static class JiraResolver implements Resolver {
-        private final Jira jira;
+        private final JiraReadOnly jira;
 
-        public JiraResolver(Jira jira) {
+        public JiraResolver(JiraReadOnly jira) {
             this.jira = jira;
         }
 

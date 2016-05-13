@@ -28,7 +28,7 @@ public class JiraIT extends SwizzleJiraTestCase {
     SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
 
     public void testJira() throws Exception {
-        Jira jira = getJira();
+        JiraReadOnly jira = getJira();
 
         Issue issue = jira.getIssue("SWIZZLE-1");
         assertEquals("Issue.getCreated()", "Fri Aug 04 20:05:13 2006", formatter.format(issue.getCreated()));
