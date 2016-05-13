@@ -8,7 +8,7 @@ public abstract class SwizzleJiraTestCase
     protected Jira getJira()
         throws Exception
     {
-        Jira jira = new Jira( "http://jira.codehaus.org/rpc/xmlrpc" );
+        Jira jira = new JiraRpc( "http://jira.codehaus.org/rpc/xmlrpc" );
         jira.login( "swizzle", "swizzle" );
         return jira;
     }

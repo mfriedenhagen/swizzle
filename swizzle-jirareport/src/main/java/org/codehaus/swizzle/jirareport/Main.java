@@ -17,6 +17,7 @@
 package org.codehaus.swizzle.jirareport;
 
 import org.codehaus.swizzle.jira.Jira;
+import org.codehaus.swizzle.jira.JiraRpc;
 import org.codehaus.swizzle.jira.JiraRss;
 
 import org.apache.velocity.Template;
@@ -168,7 +169,7 @@ public class Main {
     public static class Xmlrpc {
         public Jira connect(String user, String url) throws Exception {
             String[] strings = user.split(":");
-            Jira jira = new Jira(url);
+            Jira jira = new JiraRpc(url);
             jira.login(strings[0], strings[1]);
             return jira;
         }

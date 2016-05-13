@@ -29,7 +29,7 @@ public class AttachmentsIT extends SwizzleJiraTestCase {
     SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
 
     public void testJira() throws Exception {
-        Jira jira = new Jira( "https://issues.apache.org/jira" );
+        Jira jira = new JiraRpc( "https://issues.apache.org/jira" );
         jira.login( "dblevins", "Sn0wmanj" );
         jira.autofill("attachments", true);
 
