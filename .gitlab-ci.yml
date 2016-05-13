@@ -4,14 +4,15 @@ variables:
 before_script:
   - 'mvn --batch-mode --non-recursive -q io.takari:maven:wrapper -Dmaven=3.3.9'
 
-jdk7:
-  image: maven:3-jdk-7
+.jdk_test: &jdk_test
   stage: test
   script:
     - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
 
+jdk7:
+  <<: *jdk_test
+  image: maven:3-jdk-7
+
 jdk8:
+  <<: *jdk_test
   image: maven:3-jdk-8
-  stage: test
-  script:
-    - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
