@@ -17,6 +17,7 @@
 package org.codehaus.swizzle.jira;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -25,12 +26,18 @@ import java.util.Map;
 public class JiraIT extends SwizzleJiraTestCase {
 
     // Date is retrieved without timezone from xmlrpc (@codehaus?)
-    SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
+    SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy", Locale.ENGLISH);
+
+    public void testJiraStatus() throws Exception {
+        JiraReadOnly jira = getJira();
+        assertEquals("https://issues.apache.org/jira", jira.getServerInfo().getBaseUrl());
+    }
 
     public void testJira() throws Exception {
         JiraReadOnly jira = getJira();
 
         Issue issue = jira.getIssue("MSHARED-490");
+        assertEquals("Issue.getKey()", "MSHARED-490", issue.getKey());
         assertEquals("Issue.getCreated()", "Fri Aug 04 20:05:13 2006", formatter.format(issue.getCreated()));
         assertEquals("Issue.getSummary()", "Unit Test Summary", issue.getSummary());
         assertEquals("Issue.getType()", 2, issue.getType().getId());
@@ -38,7 +45,7 @@ public class JiraIT extends SwizzleJiraTestCase {
         assertEquals("Issue.getStatus()", 6, issue.getStatus().getId());
         assertEquals("Issue.getUpdated()", "Fri Aug 04 21:33:48 2006", formatter.format(issue.getUpdated()));
         assertEquals("Issue.getId()", 40099, issue.getId());
-        assertEquals("Issue.getKey()", "SWIZZLE-1", issue.getKey());
+
         assertEquals("Issue.getDescription()", "Unit Test Description", issue.getDescription());
         assertEquals("Issue.getDuedate()", "Sun Aug 06 00:00:00 2006", formatter.format(issue.getDuedate()));
         assertEquals("Issue.getReporter()", "dblevins", issue.getReporter().getName());

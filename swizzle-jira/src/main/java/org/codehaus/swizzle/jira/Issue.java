@@ -60,7 +60,13 @@ public class Issue extends MapObject implements Comparable {
     }
 
     public IssueType getType() {
-        return (IssueType) getMapObject("type", IssueType.class);
+        final IssueType type = (IssueType) getMapObject("type", IssueType.class);
+        if (type != null) {
+            return type;
+        } else {
+            return (IssueType) getMapObject("issuetype", IssueType.class);
+        }
+
     }
 
     public void setType(IssueType type) {
@@ -95,12 +101,14 @@ public class Issue extends MapObject implements Comparable {
      * @return List<User>
      */
     public List<User> getVoters() {
-        if (!hasField("voters")) {
-            List votes = new MapObjectList();
-            for (int i = getInt("votes"); i > 0; i--) {
-                votes.add(new User());
+        if (!hasField("fields")) {
+            if (!hasField("voters")) {
+                List votes = new MapObjectList();
+                for (int i = getInt("votes"); i > 0; i--) {
+                    votes.add(new User());
+                }
+                setMapObjects("voters", votes);
             }
-            setMapObjects("voters", votes);
         }
         return getMapObjects("voters", User.class);
     }

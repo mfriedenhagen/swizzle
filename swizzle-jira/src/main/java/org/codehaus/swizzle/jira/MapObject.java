@@ -16,6 +16,8 @@
  */
 package org.codehaus.swizzle.jira;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -51,6 +53,8 @@ public class MapObject {
     protected MapObject(Map data) {
         fields = new HashMap(data);
         formats = new SimpleDateFormat[] {
+                // JSON
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH),
                 new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH),
                 new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH), };
@@ -66,7 +70,17 @@ public class MapObject {
     }
 
     protected String getString(String key) {
-        return (String) fields.get(key);
+        final Object outer = fields.get(key);
+        if(outer != null && outer instanceof String) {
+            return (String) outer;
+        } else { // dig deeper for JSON
+            final Object o = ((JSONObject) this.fields.get("fields")).opt(key);
+            if (o == JSONObject.NULL) {
+                return null;
+            } else {
+                return (String) o;
+            }
+        }
     }
 
     protected boolean getBoolean(String key) {
@@ -110,6 +124,11 @@ public class MapObject {
         fields.put(key, formats[0].format(value));
     }
 
+    /**
+     * If date does not exist, return "now"
+     * @param key
+     * @return
+     */
     protected Date getDate(String key) {
         String value = getString(key);
         if (value == null || value.equals("")) return new Date();
@@ -122,9 +141,7 @@ public class MapObject {
                 notParsable = e;
             }
         }
-
-        notParsable.printStackTrace();
-        return new Date();
+        throw new RuntimeException(notParsable);
     }
 
     protected List getList(String key) {
@@ -137,6 +154,10 @@ public class MapObject {
 
     protected MapObject getMapObject(String key, Class type) {
         Object object = fields.get(key);
+        if (fields.containsKey("fields")) {
+            final JSONObject jsonFields = (JSONObject) this.fields.get("fields");
+            object = jsonFields.opt(key);
+        }
         if (object == null) {
             return null;
         }
@@ -145,6 +166,9 @@ public class MapObject {
         }
 
         try {
+            if (object instanceof JSONObject ) {
+                object = new JSONObjectToMap((JSONObject)object).invoke();
+            }
             MapObject mapObject = createMapObject(type, object);
             fields.put(key, mapObject);
             return mapObject;
