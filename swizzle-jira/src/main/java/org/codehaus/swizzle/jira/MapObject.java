@@ -1,18 +1,17 @@
 /**
- *
  * Copyright 2006 David Blevins
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.codehaus.swizzle.jira;
 
@@ -52,33 +51,37 @@ public class MapObject {
 
     protected MapObject(Map data) {
         fields = new HashMap(data);
-        formats = new SimpleDateFormat[] {
+        formats = new SimpleDateFormat[]{
                 // JSON
                 new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH),
                 new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH),
                 new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH), };
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH),};
         attributes = new Attributes();
     }
 
     public Map getFields() {
-    	return fields;
+        return fields;
     }
-    
+
     public Map getAttributes() {
         return attributes;
     }
 
     protected String getString(String key) {
         final Object outer = fields.get(key);
-        if(outer != null && outer instanceof String) {
+        if (outer != null && outer instanceof String) {
             return (String) outer;
         } else { // dig deeper for JSON
-            final Object o = ((JSONObject) this.fields.get("fields")).opt(key);
-            if (o == JSONObject.NULL) {
-                return null;
+            if (fields.containsKey("fields")) {
+                final Object o = ((JSONObject) this.fields.get("fields")).opt(key);
+                if (o == JSONObject.NULL) {
+                    return null;
+                } else {
+                    return (String) o;
+                }
             } else {
-                return (String) o;
+                return null;
             }
         }
     }
@@ -166,8 +169,8 @@ public class MapObject {
         }
 
         try {
-            if (object instanceof JSONObject ) {
-                object = new JSONObjectToMap((JSONObject)object).invoke();
+            if (object instanceof JSONObject) {
+                object = new JSONObjectToMap((JSONObject) object).invoke();
             }
             MapObject mapObject = createMapObject(type, object);
             fields.put(key, mapObject);
@@ -223,7 +226,7 @@ public class MapObject {
     }
 
     private MapObject createMapObject(Class type, Object value) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Constructor constructor = type.getConstructor(new Class[] { Map.class });
+        Constructor constructor = type.getConstructor(new Class[]{Map.class});
         Map data;
 
         Object idField = xmlrpcRefs.get(type);
@@ -236,7 +239,7 @@ public class MapObject {
             throw new RuntimeException("Cannot create a " + type.getName() + " from '" + value + "'");
         }
 
-        Object object = constructor.newInstance(new Object[] { data });
+        Object object = constructor.newInstance(new Object[]{data});
         return (MapObject) object;
     }
 
@@ -244,7 +247,7 @@ public class MapObject {
         // The fields table might have some key->null entries,
         // don't want to add those to the hashmap.
         Map map = new HashMap(fields.size());
-        for (Iterator i = fields.entrySet().iterator(); i.hasNext();) {
+        for (Iterator i = fields.entrySet().iterator(); i.hasNext(); ) {
             Map.Entry entry = (Map.Entry) i.next();
             if (entry.getValue() != null) {
                 map.put(entry.getKey(), entry.getValue());
@@ -259,7 +262,7 @@ public class MapObject {
 
         // Expand any MapObject values to be Hashmaps
         // Where specified, use the appropriate Id Field instead of the Hashmap
-        for (Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
             Map.Entry entry = (Map.Entry) iterator.next();
             Object key = entry.getKey();
             Object value = entry.getValue();
