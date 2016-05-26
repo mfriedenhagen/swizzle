@@ -64,7 +64,7 @@ public class JsonIssueTest {
         assertEquals("Version.getName()", "maven-shared-io-3.0.0", version.getName());
         assertEquals("Version.getReleased()", true, version.getReleased());
         assertEquals("Version.getArchived()", false, version.getArchived());
-        assertEquals("Version.getReleaseDate()", formatter.parse("2015-12-23T00:00:00.000+0100"), version.getReleaseDate());
+        assertEquals("Version.getReleaseDate()", 1450825200000L, version.getReleaseDate().getTime());
         assertEquals("Version.getSequence()", 0, version.getSequence());
         assertEquals("Version.getId()", 12334278, version.getId());
 
