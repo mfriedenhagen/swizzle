@@ -7,25 +7,32 @@ before_script:
 .jdk_validate: &jdk_validate
   stage: build
   script:
-    - './mvnw --show-version --errors --batch-mode compile validate'
+    - './mvnw --show-version --errors --batch-mode test-compile'
+  artifacts:
+    paths:
+      - "*/target/"
 
 .jdk_test: &jdk_test
   stage: test
   script:
-    - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
+    - './mvnw --show-version --errors --batch-mode -DskipITs verify site'
 
-jdk7_validate:
+validate:jdk7:
   <<: *jdk_validate
   image: maven:3-jdk-7
 
-jdk8_validate:
+validate:jdk8:
   <<: *jdk_validate
   image: maven:3-jdk-8
 
-jdk7_test:
+test:jdk7:
   <<: *jdk_test
   image: maven:3-jdk-7
+  dependencies:
+    - validate:jdk7
 
-jdk8_test:
+test:jdk8:
   <<: *jdk_test
   image: maven:3-jdk-8
+  dependencies:
+    - validate:jdk8
