@@ -10,7 +10,7 @@ before_script:
     - './mvnw --show-version --errors --batch-mode test-compile'
   artifacts:
     paths:
-      - "*/target/"
+      - "./*/target/*"
 
 .jdk_test: &jdk_test
   stage: test
