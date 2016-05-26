@@ -4,15 +4,28 @@ variables:
 before_script:
   - 'mvn --batch-mode --non-recursive -q io.takari:maven:wrapper -Dmaven=3.3.9'
 
+.jdk_validate: &jdk_validate
+  stage: build
+  script:
+    - './mvnw --show-version --errors --batch-mode compile validate'
+
 .jdk_test: &jdk_test
   stage: test
   script:
     - './mvnw --show-version --errors --batch-mode -DskipITs clean verify site'
 
-jdk7:
+jdk7_validate:
+  <<: *jdk_validate
+  image: maven:3-jdk-7
+
+jdk8_validate:
+  <<: *jdk_validate
+  image: maven:3-jdk-8
+
+jdk7_test:
   <<: *jdk_test
   image: maven:3-jdk-7
 
-jdk8:
+jdk8_test:
   <<: *jdk_test
   image: maven:3-jdk-8
