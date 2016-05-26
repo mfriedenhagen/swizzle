@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -50,30 +51,23 @@ public class JsonIssueTest {
         assertEquals("Issue.getProject()", "MSHARED", issue.getProject().getKey());
         assertEquals("Issue.getResolution()", 5, issue.getResolution().getId());
         assertEquals("Issue.getVotes()", 0, issue.getVotes());
-//        assertEquals("Issue.getAssignee()", null, issue.getAssignee());
-//        assertEquals("Issue.getPriority()", 1, issue.getPriority().getId());
-//        assertEquals("Issue.getLink() - " + issue.getLink(), "https://jira.codehaus.org/browse/SWIZZLE-1", issue.getLink());
-//
-//        assertEquals("Issue.getFixVersions().size()", 1, issue.getFixVersions().size());
-//        assertTrue("FixVersion instance of Version", issue.getFixVersions().get(0) instanceof Version);
-//        Version version = (Version) issue.getFixVersions().get(0);
-//        assertEquals("Version.getName()", "Test Version", version.getName());
-//        assertEquals("Version.getReleased()", false, version.getReleased());
-//        assertEquals("Version.getArchived()", false, version.getArchived());
-//        assertEquals("Version.getReleaseDate()", "Sun Aug 06 00:00:00 2006", formatter.format(version.getReleaseDate()));
-//        assertEquals("Version.getSequence()", 5, version.getSequence());
-//        assertEquals("Version.getId()", 12831, version.getId());
-//
-//        assertEquals("Issue.getAffectsVersions().size()", 1, issue.getAffectsVersions().size());
-//        assertTrue("AffectsVersion instance of Version", issue.getAffectsVersions().get(0) instanceof Version);
-//        version = (Version) issue.getAffectsVersions().get(0);
-//        assertEquals("Version.getName()", "Test Version", version.getName());
-//        assertEquals("Version.getReleased()", false, version.getReleased());
-//        assertEquals("Version.getArchived()", false, version.getArchived());
-//        assertEquals("Version.getReleaseDate()", "Sun Aug 06 00:00:00 2006", formatter.format(version.getReleaseDate()));
-//        assertEquals("Version.getSequence()", 5, version.getSequence());
-//        assertEquals("Version.getId()", 12831, version.getId());
-//
+        assertEquals("Issue.getAssignee()", null, issue.getAssignee());
+        assertEquals("Issue.getPriority()", 3, issue.getPriority().getId());
+        assertEquals("Issue.getLink() - " + issue.getLink(), null, issue.getLink());
+
+        assertEquals("Issue.getFixVersions().size()", 0, issue.getFixVersions().size());
+
+        assertEquals("Issue.getAffectsVersions().size()", 1, issue.getAffectsVersions().size());
+        final List<Version> affectsVersions = issue.getAffectsVersions();
+        Version version = (Version) affectsVersions.get(0);
+        assertTrue("AffectsVersion instance of Version", version instanceof Version);
+        assertEquals("Version.getName()", "maven-shared-io-3.0.0", version.getName());
+        assertEquals("Version.getReleased()", true, version.getReleased());
+        assertEquals("Version.getArchived()", false, version.getArchived());
+        assertEquals("Version.getReleaseDate()", formatter.parse("2015-12-23T00:00:00.000+0100"), version.getReleaseDate());
+        assertEquals("Version.getSequence()", 0, version.getSequence());
+        assertEquals("Version.getId()", 12334278, version.getId());
+
 //        assertEquals("Issue.getComponents().size()", 1, issue.getComponents().size());
 //        assertTrue("Issue.getComponents instance of Component", issue.getComponents().get(0) instanceof Component);
 //        Component component = (Component) issue.getComponents().get(0);

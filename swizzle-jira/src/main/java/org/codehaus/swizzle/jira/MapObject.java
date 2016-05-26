@@ -15,6 +15,8 @@
  */
 package org.codehaus.swizzle.jira;
 
+import org.apache.commons.collections.IteratorUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
@@ -56,7 +58,11 @@ public class MapObject {
                 new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH),
                 new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH),
                 new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH),
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH),};
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH),
+                // JSON releaseDate
+                new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH),
+        };
+
         attributes = new Attributes();
     }
 
@@ -69,27 +75,18 @@ public class MapObject {
     }
 
     protected String getString(String key) {
-        final Object outer = fields.get(key);
-        if (outer != null && outer instanceof String) {
-            return (String) outer;
-        } else { // dig deeper for JSON
-            if (fields.containsKey("fields")) {
-                final Object o = ((JSONObject) this.fields.get("fields")).opt(key);
-                if (o == JSONObject.NULL) {
-                    return null;
-                } else {
-                    return (String) o;
-                }
-            } else {
-                return null;
-            }
-        }
+        return (String) getObject(key);
     }
 
     protected boolean getBoolean(String key) {
-        String value = getString(key);
+        final Object value = getObject(key);
         if (value == null) return false;
-        return (value.equalsIgnoreCase("true") || value.equals("1") || value.equalsIgnoreCase("yes"));
+        if (value instanceof Boolean) {
+            return (boolean)value;
+        } else {
+            final String svalue = String.valueOf(value);
+            return (svalue.equalsIgnoreCase("true") || svalue.equals("1") || svalue.equalsIgnoreCase("yes"));
+        }
     }
 
     protected int getInt(String key) {
@@ -148,7 +145,18 @@ public class MapObject {
     }
 
     protected List getList(String key) {
-        return (List) fields.get(key);
+        return (List) getObject(key);
+    }
+
+    private Object getObject(String key) {
+        Object o = fields.get(key);
+        if (o == null && fields.containsKey("fields")) {
+            final JSONObject jsonFields = (JSONObject) getObject("fields");
+            o = jsonFields.opt(key);
+            return o == JSONObject.NULL ? null : o;
+        } else {
+            return o;
+        }
     }
 
     protected void setList(String key, List value) {
@@ -156,22 +164,18 @@ public class MapObject {
     }
 
     protected MapObject getMapObject(String key, Class type) {
-        Object object = fields.get(key);
-        if (fields.containsKey("fields")) {
-            final JSONObject jsonFields = (JSONObject) this.fields.get("fields");
-            object = jsonFields.opt(key);
-        }
+        Object object = getObject(key);
         if (object == null) {
             return null;
         }
         if (object instanceof MapObject) {
             return (MapObject) object;
         }
+        if (object instanceof JSONObject) {
+            object = new JSONObjectToMap((JSONObject) object).invoke();
+        }
 
         try {
-            if (object instanceof JSONObject) {
-                object = new JSONObjectToMap((JSONObject) object).invoke();
-            }
             MapObject mapObject = createMapObject(type, object);
             fields.put(key, mapObject);
             return mapObject;
@@ -190,7 +194,7 @@ public class MapObject {
 
     protected <T> List<T> getMapObjects(String key, Class<T> type) {
         List<T> list;
-        Object collection = fields.get(key);
+        Object collection = getObject(key);
         if (collection instanceof Object[]) {
             Object[] vector = (Object[]) collection;
             try {
@@ -203,6 +207,22 @@ public class MapObject {
         } else if (collection == null) {
             list = new MapObjectList<T>();
             fields.put(key, list);
+        } else if (collection instanceof JSONArray) {
+            Iterator<Object> iterator = ((JSONArray) collection).iterator();
+            List<Map> tmp = new ArrayList<>();
+            while(iterator.hasNext()) {
+                tmp.add(new JSONObjectToMap((JSONObject)iterator.next()).invoke());
+            }
+            Object[] vector = tmp.toArray();
+            try {
+                list = toList(vector, type);
+                Iterator iter = list.iterator();
+                fields.put(key, list);
+            } catch (Exception e) {
+                list = new MapObjectList();
+            }
+            iterator = ((JSONArray) collection).iterator();
+            list = IteratorUtils.toList(iterator);
         } else {
             list = (List) collection;
         }
@@ -313,7 +333,7 @@ public class MapObject {
         }
 
         private Map map() {
-            return (Map) fields.get("#attributes");
+            return (Map) getObject("#attributes");
         }
 
         public void clear() {

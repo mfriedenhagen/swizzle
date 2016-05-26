@@ -172,7 +172,12 @@ public class Issue extends MapObject implements Comparable {
      * List of Versions
      */
     public List<Version> getAffectsVersions() {
-        return getMapObjects("affectsVersions", Version.class);
+        final List<Version> affectsVersions = getMapObjects("affectsVersions", Version.class);
+        if (fields.containsKey("fields")) {
+            return getMapObjects("versions", Version.class);
+        } else {
+            return affectsVersions;
+        }
     }
 
     public void setAffectsVersions(List affectsVersions) {
