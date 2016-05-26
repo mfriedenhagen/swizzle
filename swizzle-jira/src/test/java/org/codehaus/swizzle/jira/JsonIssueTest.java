@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class JsonIssueTest {
 
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-
+    final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
     final InputStream stream = JsonIssueTest.class.getResourceAsStream("/issue.json");
 
     @After
@@ -34,6 +30,7 @@ public class JsonIssueTest {
 
     @Test
     public void shouldLoadFromJson() throws IOException, ParseException {
+
         final JSONObject object = new JsonNode(IOUtils.toString(stream)).getObject();
         final Issue issue = new Issue(new JSONObjectToMap(object).invoke());
         assertEquals("MSHARED-490", issue.getKey());
@@ -64,7 +61,7 @@ public class JsonIssueTest {
         assertEquals("Version.getName()", "maven-shared-io-3.0.0", version.getName());
         assertEquals("Version.getReleased()", true, version.getReleased());
         assertEquals("Version.getArchived()", false, version.getArchived());
-        assertEquals("Version.getReleaseDate()", 1450825200000L, version.getReleaseDate().getTime());
+        assertEquals("Version.getReleaseDate()", 23, version.getReleaseDate().getDate());
         assertEquals("Version.getSequence()", 0, version.getSequence());
         assertEquals("Version.getId()", 12334278, version.getId());
 
