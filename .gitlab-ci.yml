@@ -1,10 +1,7 @@
 variables:
   MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
 
-before_script:
-  - 'mvn --batch-mode --non-recursive -q io.takari:maven:wrapper -Dmaven=3.3.9'
-
-.jdk_validate: &jdk_validate
+.validate: &validate
   stage: build
   script:
     - './mvnw --show-version --errors --batch-mode --fail-at-end test-compile'
@@ -12,27 +9,37 @@ before_script:
     paths:
       - "./*/target/*"
 
-.jdk_test: &jdk_test
+.test: &test
   stage: test
   script:
     - './mvnw --show-version --errors --batch-mode --fail-at-end -DskipITs verify site'
 
 validate:jdk7:
-  <<: *jdk_validate
-  image: maven:3-jdk-7
+  <<: *validate
+  image: maven:3.3.9-jdk-7
+
+validate:jdk7:maven-3.3.3:
+  <<: *validate
+  image: maven:3.3.3-jdk-7
 
 validate:jdk8:
-  <<: *jdk_validate
-  image: maven:3-jdk-8
+  <<: *validate
+  image: maven:3.3.9-jdk-8
 
 test:jdk7:
-  <<: *jdk_test
-  image: maven:3-jdk-7
+  <<: *test
+  image: maven:3.3.9-jdk-7
   dependencies:
     - validate:jdk7
 
+test:jdk7:maven-3.3.3:
+  <<: *test
+  image: maven:3.3.3-jdk-7
+  dependencies:
+    - validate:jdk7:maven-3.3.3
+
 test:jdk8:
-  <<: *jdk_test
-  image: maven:3-jdk-8
+  <<: *test
+  image: maven:3.3.9-jdk-8
   dependencies:
     - validate:jdk8
