@@ -4,7 +4,7 @@ variables:
 .validate: &validate
   stage: build
   script:
-    - './mvnw --show-version --errors --batch-mode --fail-at-end test-compile'
+    - 'mvn --show-version --errors --batch-mode --fail-at-end test-compile'
   artifacts:
     paths:
       - "./*/target/*"
@@ -12,7 +12,7 @@ variables:
 .test: &test
   stage: test
   script:
-    - './mvnw --show-version --errors --batch-mode --fail-at-end -DskipITs verify site'
+    - 'mvn --show-version --errors --batch-mode --fail-at-end -DskipITs verify site'
 
 validate:jdk7:
   <<: *validate
