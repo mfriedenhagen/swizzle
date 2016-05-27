@@ -7,7 +7,7 @@ before_script:
 .jdk_validate: &jdk_validate
   stage: build
   script:
-    - './mvnw --show-version --errors --batch-mode test-compile'
+    - './mvnw --show-version --errors --batch-mode --fail-at-end test-compile'
   artifacts:
     paths:
       - "./*/target/*"
@@ -15,7 +15,7 @@ before_script:
 .jdk_test: &jdk_test
   stage: test
   script:
-    - './mvnw --show-version --errors --batch-mode -DskipITs verify site'
+    - './mvnw --show-version --errors --batch-mode --fail-at-end -DskipITs verify site'
 
 validate:jdk7:
   <<: *jdk_validate
