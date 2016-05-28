@@ -65,31 +65,11 @@ public class JsonIssueTest {
         assertEquals("Version.getSequence()", 0, version.getSequence());
         assertEquals("Version.getId()", 12334278, version.getId());
 
-//        assertEquals("Issue.getComponents().size()", 1, issue.getComponents().size());
-//        assertTrue("Issue.getComponents instance of Component", issue.getComponents().get(0) instanceof Component);
-//        Component component = (Component) issue.getComponents().get(0);
-//        assertEquals("Component.getName()", "swizzle-jira", component.getName());
-//        assertEquals("Component.getId()", 12312, component.getId());
-//
-//        Map data = issue.toMap();
-//
-//        assertEquals("issue.Created", "2006-08-04 20:05:13.157", data.get("created"));
-//        assertEquals("issue.Summary", "Unit Test Summary", data.get("summary"));
-//        assertEquals("issue.Type", "2", data.get("type"));
-//        assertEquals("issue.Environment", "Unit Test Environment", data.get("environment"));
-//        assertEquals("issue.Status", "6", data.get("status"));
-//        assertEquals("issue.Updated", "2006-08-04 21:33:48.108", data.get("updated"));
-//        assertEquals("issue.Id", "40099", data.get("id"));
-//        assertEquals("issue.Key", "SWIZZLE-1", data.get("key"));
-//        assertEquals("issue.Description", "Unit Test Description", data.get("description"));
-//        assertEquals("issue.Duedate", "2006-08-06 00:00:00.0", data.get("duedate"));
-//        assertEquals("issue.Reporter", "dblevins", data.get("reporter"));
-//        assertEquals("issue.Project", "SWIZZLE", data.get("project"));
-//        assertEquals("issue.Resolution", "1", data.get("resolution"));
-//        assertEquals("issue.Votes", "1", data.get("votes"));
-//        assertEquals("issue.Assignee", "dblevins", data.get("assignee"));
-//        assertEquals("issue.Priority", "1", data.get("priority"));
-//        assertEquals("issue.Link", null, data.get("link"));
+        assertEquals("Issue.getComponents().size()", 1, issue.getComponents().size());
+        assertTrue("Issue.getComponents instance of Component", issue.getComponents().get(0) instanceof Component);
+        Component component = (Component) issue.getComponents().get(0);
+        assertEquals("Component.getName()", "maven-shared-io", component.getName());
+        assertEquals("Component.getId()", 12326440, component.getId());
 
     }
 }
